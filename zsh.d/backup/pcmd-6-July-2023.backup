@@ -1,0 +1,25 @@
+#!/bin/bash
+#| printf variables inside single quotes aren't expaned & this
+#| enables passing of zsh special charaters as seen here with path symbol
+#|
+whiteOnGrey=$(tput setab 243; tput setaf 15;);
+whiteOnNavy=$(tput setab 17; tput setaf 12;);
+hostDecor=$(tput setaf 57);
+host=$(tput setaf 92);
+ul=$(tput smul);
+lu=$(tput rmul);
+shl=$($GRN${SHELL//*\/}$RST):
+
+
+if [[ "$(echo $HOME)" = "/var/root" ]]
+then§
+	_first=$(echo $'\e[1;31m'" -= ROOT =-"$'\e[m');
+else
+	_first=$(echo "%{${hostDecor}${ul}%}|%{$host%}${HOSTNAME//\.*}%{$hostDecor%}|%{${lu}$(tput sgr0)%}");
+fi
+_rtnVal=$1;
+[ "$_rtnVal" != 0 ] && \
+echo $'%{\e[1;4;37;41m%'"}|Error"$'%{\e[m%}'"${whiteOnGrey}${ul}|${_rtnVal}|${lu}"$'%{\e[m\e[1;37m%} %2~%{\e[1;34m/\e[m%} $ '\
+|| \
+echo "${_first}" $'%{\e[0;32m%}'"%{${whiteOnNavy}$ul%}|$(date +%H:%M)|%{${rst}$lu%}"$'%{\e[m%} %{\e[1;37m%}%2~%{\e[1;34m/\e[m%}($SHELL)$ '
+unset _first;

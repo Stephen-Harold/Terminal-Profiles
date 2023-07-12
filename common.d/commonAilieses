@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# -= ENV: ALIASES =-
+alias ll='ls -lhG';
+alias la='ls -lhAG';
+alias grep='grep --color=always'
+alias egrep='egrep --color=always'
+alias listening='lsof -i -P | egrep -i LISTEN'
+alias numTabs='ps -afx | egrep -i \"\-(zsh|bash)\" | grep -iv \"grep\" | wc -l'
+alias estab='sudo lsof -nP -i4TCP | grep EST';

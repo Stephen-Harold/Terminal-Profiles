@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# terminal foreground text colours
+export RED=$( tput setaf 160);
+export GREEN=$(tput setaf  40);
+export BLUE=$(tput setaf  33);
+export WHITE=$(tput setaf  15);
+export YELLOW=$(tput  setaf 220);
+export CYAN=$(tput setaf  51);
+export BLACK=$(tput setaf 232);
+export PURPLE=$(tput setaf  56);
+export PINK=$(tput setaf 201);
+export TEAL=$(tput setaf  41);
+# terminal text decorations
+export BOLD=$(tput bold);
+export UL=$(tput smul);
+export LU=$(tput rmul);
+export RESET=$(tput sgr0);
+# terminal text colours, foreground & background
+export redOnWhite=$(tput setab 15; tput setaf 1;);
+export whiteOnRed=$(tput setab 1; tput setaf 15;);
+export BlueOnBlue=$(tput	setab 17; tput setaf 12;);
+# unique terminal text colour configurations
+export hostDecor=$(tput setaf 57);
+export hostClr=$(tput setaf 32);
+export shellClr=$(tput setaf	92);
+# prompt preconfigured text snippets
+export home=$( tput setaf $(( $RANDOM % 254 + 1 )); printf "H"; \
+							 tput setaf $(( $RANDOM % 50 + 1 )); printf "o"; \
+							 tput setaf $(( $RANDOM % 50 + 1 )); printf "m"; \
+							 tput setaf $(( $RANDOM % 254 + 1 )); printf "e"; \
+							 tput sgr0; );
+export textRoot="${hostDecor}${UL}|$hostROOT$hostDecor|${LU}$RESET";
+export textHost="${hostDecor}${UL}${hostClr}${HOSTNAME//\.*}${hostDecor}${LU}${RESET}";
+export textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
+		echo "${WHITE}('${home}${WHITE}')${RESET}" || \
+		echo "${WHITE}(%2~${CYAN}/${WHITE})${RESET}");
+export textShell=$( echo "${GREEN}${SHELL//*\/}${RESET}" );
+export textShellPink=$( echo "%{$PINK%}${SHELL//*\/}%{$RESET%}" );
+export textTime="${BlueOnBlue}${UL}|$(date +%H:%M)|${LU}${RESET}";
+
+
+# -= ENV: EXPORTS =-
+export PAGER=less;
+export EDITOR=nano;
+export GREP_COLOR=36;
+export USERNAME=$LOGNAME;
+export HOSTNAME=$HOST;
+export du="/usr/local/lib/utils.d";
+export dc="~/.local/profiles/common.d";
+export dz="~/.local/profiles/zsh.d";
+export db="~/.local/profiles/bash.d";
+export share="~/.local/share";
+export DEBUG=0; # SET TO 1 FOR ON
+export utilsDebug="Off";
+# DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
+_tn=$( ps -afx | egrep -i '\-zsh' | grep -v 'grep' | wc -l );
+export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
+

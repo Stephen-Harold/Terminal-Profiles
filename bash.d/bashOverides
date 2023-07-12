@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# -= DOCK: HIDE/UNHIDE =-
+defaults write com.apple.dock autohide-delay -float 0.0001; killall Dock;
+
+# -= PROMPT: PRECMD HOOK OVERIDE =-
+function precmd() {
+    local exitValue=$?;
+    local prefix="/Users/stephen-harold/.local/profiles/bash.d";
+		local filePS1="$prefix/PS01";
+    local filePS2="$prefix/PS02";
+	[[ -r $_vars ]] && source $_vars
+    [[ -r $filePS1 ]] && PS1=$( $filePS1 $exitValue || PS1="[%n@%M] (%2~)$: ")
+    [[ -r $filePS2 ]] && PS2=$( $filePS2 $exitValue || PS2="(%2~)$: ")
+}
+
+# -= TITLES (TERMINAL & TERMINAL TAB): CHPWD HOOK OVERRIDE =-
+function chpwd() {
+#    echo -ne "\033]0; ( ${PWD} ) [ $USERNAME@$HOSTNAME ] $(date +"%A %d %b %G  |  %H:%M") \007"; # Window Title
+}
+
+function periodic() {
+    if [ $_tn -gt 1 ]
+    then
+        print -Pn "\e]2;$(uptime);\a" # Terminal Title
+        print -Pn "\e]1; %m: %n  (  ${PWD/$HOME/'Home'}  ) \a" # Tab Title, when there's 2 or more tabs
+    else
+        print -Pn "\e]2;$(uptime);\a" # Terminal Title
+    fi
+}
+export PERIOD=1

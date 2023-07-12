@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# -= PROMPT: PRECMD HOOK OVERIDE =-
+function precmd() {
+    local exitValue=$?;
+    local prefix="/Users/stephen-harold/.local/profiles/zsh.d/";
+		local filePS1="$prefix/zshPS01";
+    local filePS2="$prefix/zshPS02";
+    [[ -r ${filePS1} ]] && PS1=$( "${filePS1}" $exitValue || PS1="[%n@%M] (%2~)$: ")
+    [[ -r ${filePS2} ]] && PS2=$( "${filePS2}" $exitValue || PS2="(%2~)$: ")
+}
+
+# -= TITLES (TERMINAL & TERMINAL TAB): CHPWD HOOK OVERRIDE =-
+function chpwd() {
+#    echo -ne "\033]0; ( ${PWD} ) [ $USERNAME@$HOSTNAME ] $(date +"%A %d %b %G  |  %H:%M") \007"; # Window Title
+}
+

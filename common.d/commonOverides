@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+# -= TITLES (TERMINAL & TERMINAL TAB): CHPWD HOOK OVERRIDE =-
+function chpwd() {
+#    echo -ne "\033]0; ( ${PWD} ) [ $USERNAME@$HOSTNAME ] $(date +"%A %d %b %G  |  %H:%M") \007"; # Window Title
+}

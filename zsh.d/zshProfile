@@ -1,0 +1,31 @@
+#!/bin/zsh
+declare -A arrayProfiles;
+
+# -= DOCK: HIDE/UNHIDE =-
+defaults write com.apple.dock autohide-delay -float 0.0001; killall Dock;
+
+# -= FILES: SOURCE PROFILE FILES =-
+function sourceProfile() {
+	arrayProfiles=( \
+	['1']="/Users/stephen-harold/.local/profiles/zsh.d/zshOptions" \
+	['2']="/Users/stephen-harold/.local/profiles/common.d/commonConfig" \
+	['3']="/Users/stephen-harold/.local/profiles/common.d/commonExports" \
+	['4']="/Users/stephen-harold/.local/profiles/zsh.d/zshExports" \
+	['5']="/Users/stephen-harold/.local/profiles/common.d/commonAilieses" \
+	['6']="/Users/stephen-harold/.local/profiles/zsh.d/zshAlieses" \
+	['7']="/Users/stephen-harold/.local/profiles/common.d/commonOverides" \
+	['8']="/Users/stephen-harold/.local/profiles/zsh.d/zshOverides" \
+	['9']="/Users/stephen-harold/.local/profiles/common.d/commonPeriodics" );
+
+	for number in {1..9}
+	do
+		local thisFile=${arrayProfiles[$number]};
+		[[ -r $thisFile ]] && source $thisFile || echo "\e[1;31mFile not found:\e[1;37m $thisFile \e[m"
+		. Dbug "$index. Called source on $thisFile.";
+	done
+	. Dbug "Called source on all ${arrayProfiles[#]} files in total.";
+}
+
+. Dbug "zsh profile ignition";
+sourceProfile;
+unset -f sourceProfile;
