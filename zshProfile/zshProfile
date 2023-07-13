@@ -1,0 +1,28 @@
+#!/bin/zsh
+# declaration debug function and export
+declare -f DEBUG;
+export DEBUG=1; # SET TO 1 FOR ON
+
+function DEBUG() {
+	local scriptName=$1;
+	local message=$2;
+	[[ "$DEBUG" = 1 ]] && echo "${WHITE}-${RED}-=|] $(date +%H:%M:%S) [|=-${WHITE}-${YELLOW}-=|] ${WHITE}{scriptName:-"Not Set!"} [|=-${WHITE}-${GREEN}-=|] ${message:-"Message Variable Not Set. [|=-${WHITE}-"}${RESET}";
+}
+
+declare -A arrayProfiles=(
+	['0']="/Users/stephen-harold/.local/profiles/common.d/commonExports"
+	['1']="/Users/stephen-harold/.local/profiles/common.d/commonConfig"
+	['2']="/Users/stephen-harold/.local/profiles/common.d/commonAilieses"
+	['3']="/Users/stephen-harold/.local/profiles/common.d/commonOverides"
+	['4']="/Users/stephen-harold/.local/profiles/common.d/commonPeriodics"
+	['5']="/Users/stephen-harold/.local/profiles/zshProfiles/zshOptions"
+	['6']="/Users/stephen-harold/.local/profiles/zshProfiles/zshExports"
+	['7']="/Users/stephen-harold/.local/profiles/zshProfiles/zshAlieses"
+	['8']="/Users/stephen-harold/.local/profiles/zshProfiles/zshOverides" );
+
+for _num in {0..8}
+do
+	_thisFile=${arrayProfiles[$_num]};
+	[[ -r "$_thisFile" ]] && DEBUG "zshProfile" "$_num. Calling source on ${WHITE}  "$_thisFile" ${RESET}."; source "$_thisFile" || echo "zshProfile" "$_num. ${RED}File not found:${WHITE} "$_thisFile" ${RESET}"
+done
+DEBUG "zshProfile" "Called source on all "${#arrayProfiles[*]}" files in total.";

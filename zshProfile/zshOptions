@@ -1,0 +1,46 @@
+#!/bin/zsh
+
+# -= OPTIONS RE: GLOBS & EXPANSION =-
+setopt NOMATCH              # If a pattern for filename generation has no matches print an error
+setopt MARK_DIRS            # add trailing slash always
+setopt GLOB_DOTS            # don't require the leading . on filenames to match
+setopt CASE_MATCH           # RegEx when globing % expansion (including matches with =~) sensitive to case
+setopt BAD_PATTERN          # error on bad pattern
+
+# -= OPTIONS RE: COMMAND AUTOCOMPLETE & CORRECTION =-
+setopt ALWAYS_TO_END        # GoTo End of auto-completed
+setopt LIST_ROWS_FIRST      # list auto-complete options side-by-side
+unsetopt LIST_BEEP          # No beep on confusing completion
+setopt MENU_COMPLETE        # instead of beeping complete first match
+setopt CORRECT              # correct commands
+
+# -= OPTIONS RE: SECURITY =-
+setopt MAIL_WARNING         # warning message if a mail file accessed since been checked
+
+# -= OPTIONS RE: COMMAND LINE HISTORY =-
+
+# Save command history
+HISTFILE=${ZDOTDIR:-$HOME}/.zshCommandLineHistory
+HISTSIZE=4000
+SAVEHIST=2000
+
+setopt BANG_HIST                # expand !!
+setopt HIST_VERIFY
+setopt HIST_IGNORE_ALL_DUPS     # ignore and don't add duplicates
+setopt HIST_REDUCE_BLANKS       # does what it says
+setopt SHARE_HISTORY            # share history file
+unsetopt INC_APPEND_HISTORY     # this goes with SHARE_HISTORY
+setopt HIST_FCNTL_LOCK          # history file locked when in use
+setopt BANG_HIST                # perform textual history expansion
+
+# -= OPTIONS RE: PROMPT  =-
+setopt PROMPT_PERCENT           # % treated special
+setopt PROMPT_SUBST             # parameter expansion & command substitution are performed in prompts
+setopt PROMPT_BANG
+setopt PROMPT_SP PROMPT_CR      # SP: \r at end of partial line, CP: \r before prompt
+
+# -= OPTIONS RE: TITLES =-
+ DISABLE_AUTO_TITLE=true;
+
+ setopt BEEP
+

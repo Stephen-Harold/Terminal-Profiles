@@ -1,0 +1,27 @@
+#!/bin/bash
+returnValue=$1;
+
+function returnPrompt()	{
+	local whiteOnGrey=$(tput setab 15; tput setaf 1;);
+	local whiteOnRed=$(tput setab 1; tput setaf 15;);
+	local BlueOnBlue=$(tput	setab 17; tput setaf 12;);
+	local hostDecor=$(tput setaf 57);
+	local hostClr=$(tput setaf 32);
+	local shellClr=$(tput setaf	92);
+	local rst=$(tput sgr0);
+	local ul=$(tput	smul);
+	local lu=$(tput	rmul);
+	local home=$( tput setaf 166; printf "H"; tput setaf 99; printf "o"; tput setaf 37; printf "m"; tput setaf 177; printf "e"; tput sgr0; );
+	local textRoot="%{${hostDecor}${ul}%}|%{$host%}ROOT%{$hostDecor%}|%{${lu}$(tput sgr0)%}";
+	local textHost="%{${hostDecor}${ul}%}%{$hostClr%}${HOSTNAME//\.*}%{$hostDecor%}%{${lu}$rst%}";
+	local textError=$(echo "%{${whiteOnRed}%}${ul}Error ${lu}%{${rst}%}%{${whiteOnGrey}%}${ul} ${returnValue} %{$lu$rst%}");
+	local textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
+		echo $'%{\e[1;37m%}('"${home}"$'%{\e[1;37m%})\e[m%}' || \
+		echo $'%{\e[1;37m%}(%2~%{\e[1;34m/\e[1;37m%})\e[m');
+	local textShell=$'%{$GRN%}${SHELL//*\/}:.%{$RST%}';
+	local textTime=$'%{\e[0;32m%}'"%{${BlueOnBlue}$ul%}|$(date +%H:%M)|%{${rst}$lu%}";
+	local textSpace=$' ';
+	echo $( [[ "$returnValue" != 0 ]] && echo $textError || echo $textHost ) $textPath $textShell $textSpace;
+}
+
+returnPrompt;

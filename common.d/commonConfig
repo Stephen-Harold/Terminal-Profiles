@@ -1,7 +1,4 @@
 #!/bin/zsh
 
-# -= WiFi: Disable IPv6 =-
-# networksetup setv6off Wi-Fi
-
 # -= DOCK: HIDE/UNHIDE =-
 defaults write com.apple.dock autohide-delay -float 0.0001; killall Dock;

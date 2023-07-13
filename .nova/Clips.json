@@ -1,0 +1,10 @@
+{
+  "clips" : [
+    {
+      "content" : "$0\\$(( \\$RANDOM % 254 + 1 ))",
+      "name" : "Generate Random Number",
+      "scope" : "editor",
+      "syntax" : "shell"
+    }
+  ]
+}
