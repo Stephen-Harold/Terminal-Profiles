@@ -4,10 +4,10 @@
 setopt NOMATCH              # If a pattern for filename generation has no matches print an error
 setopt MARK_DIRS            # add trailing slash always
 setopt GLOB_DOTS            # don't require the leading . on filenames to match
-setopt CASE_MATCH           # RegEx when globbing % expansion (including matches with =~) sensitive to case
+setopt CASE_MATCH           # RegEx when globing % expansion (including matches with =~) sensitive to case
 setopt BAD_PATTERN          # error on bad pattern
 
-# -= OPTIONS RE: COMMAND AUTOCOMPLETE & CORECTION =-
+# -= OPTIONS RE: COMMAND AUTOCOMPLETE & CORRECTION =-
 setopt ALWAYS_TO_END        # GoTo End of auto-completed
 setopt LIST_ROWS_FIRST      # list auto-complete options side-by-side
 unsetopt LIST_BEEP          # No beep on confusing completion
@@ -18,6 +18,12 @@ setopt CORRECT              # correct commands
 setopt MAIL_WARNING         # warning message if a mail file accessed since been checked
 
 # -= OPTIONS RE: COMMAND LINE HISTORY =-
+
+# Save command history
+HISTFILE=${ZDOTDIR:-$HOME}/.zshCommandLineHistory
+HISTSIZE=4000
+SAVEHIST=2000
+
 setopt BANG_HIST                # expand !!
 setopt HIST_VERIFY
 setopt HIST_IGNORE_ALL_DUPS     # ignore and don't add duplicates
@@ -35,3 +41,6 @@ setopt PROMPT_SP PROMPT_CR      # SP: \r at end of partial line, CP: \r before p
 
 # -= OPTIONS RE: TITLES =-
  DISABLE_AUTO_TITLE=true;
+
+ setopt BEEP
+

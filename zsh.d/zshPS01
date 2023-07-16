@@ -1,12 +1,44 @@
 #!/bin/bash
-returnValue=$1;
+# Name, Sandra's Day Only, Jeep!
+# Same as above "Day Only"? the 8th...
+# -= Windows License Key: RPCP7-N6BC2-FVW96-TYFPP-CKCKG =-
+returnValue=${1:-0}; # If Var $1 is not defined it's default will be 0.
 
-function textErrorFunction() {
-	echo "%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $1 %{$LU$RESET%}";
+function textDefault() {
+# -= PROMPT: Preconfigured text snippets =-
+# Catch return value before any other command executes
+	local _rval=$1;
+# unique terminal text colour configurations
+	local _hostDecor=$(tput setaf 57);
+	local 	_hostClr=$(tput setaf 32);
+	local _pathDecor=$(tput setaf 15);
+	local 	_pathClr=$(tput setaf 7);
+	local  _shellClr=$(tput setaf 178);
+# Home directory text with random colours for each character
+	local _home=$( tput setaf $(( $RANDOM % 254 + 1 )); printf "H"; \
+					tput setaf $(( $RANDOM % 254 + 1 )); printf "o"; \
+					tput setaf $(( $RANDOM % 254 + 1 )); printf "m"; \
+					tput setaf $(( $RANDOM % 254 + 1 )); printf "e"; \
+					tput sgr0; );
+
+# Current time in 24hr clock
+	local _textTime="${BlueOnBlue}${UL}|$(date +%H:%M)|${LU}${RESET}";
+
+# MacBook name
+	local _textHost="%{${_hostDecor}${UL}${_hostClr}%}${HOSTNAME//\.*}%{${_hostDecor}${LU}${RESET}%}";
+
+# Error text when return value isn't zero
+	local _textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rval %{$LU$RESET%}";
+
+# 'home' -OR- $PWD
+	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
+		echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
+		echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
+
+# The current shell notification and insert point
+	local _textShell=$( echo "%{${UL}${_shellClr}%}${SHELL//*\/}%{${LU}${RESET}${WHITE}%}:%{${RESET}%} " );
+
+	printf "%s %s %s" "$([[ "$_rval" != 0 ]] && echo $_textError || echo $_textHost)" "$_textPath" "$_textShell";
 }
 
-function returnPrompt()	{
-	echo $( [[ "$returnValue" != 0 ]] && textErrorFunction $returnValue || echo $textHost ) $textPath $textShell": ";
-}
-
-returnPrompt;
+textDefault $returnValue;

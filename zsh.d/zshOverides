@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# -= PROMPT: PRECMD HOOK OVERIDE =-
+# -= PROMPT: PRECMD HOOK OVERRIDE =-
 function precmd() {
-    local exitValue=$?;
-    local prefix="/Users/stephen-harold/.local/profiles/zsh.d/";
-		local filePS1="$prefix/zshPS01";
-    local filePS2="$prefix/zshPS02";
-    [[ -r ${filePS1} ]] && PS1=$( "${filePS1}" $exitValue || PS1="[%n@%M] (%2~)$: ")
-    [[ -r ${filePS2} ]] && PS2=$( "${filePS2}" $exitValue || PS2="(%2~)$: ")
+    local _exitValue=$?;
+    local _prefix="/Users/stephen-harold/.local/profiles/zshProfile";
+    local _filePS1="$_prefix/zshPS01";
+    local _filePS2="$_prefix/zshPS02";
+    [[ -r "$_filePS1" ]] && PS1=$( "$_filePS1" "$_exitValue" || PS1="[%n@%M] (%2~)$: ")
+    [[ -r "$_filePS2" ]] && PS2=$( "$_filePS2" "$_exitValue" || PS2="(%2~)$: ")
 }
 
 # -= TITLES (TERMINAL & TERMINAL TAB): CHPWD HOOK OVERRIDE =-

@@ -34,8 +34,6 @@ setopt PROMPT_SP PROMPT_CR      # SP: \r at end of partial line, CP: \r before p
  DISABLE_AUTO_TITLE=true;
 # -= Alert: Sound =-
 setopt BEEP
-# -= DOCK: HIDE/UNHIDE =-
-defaults write com.apple.dock autohide-delay -float 0.0001; killall Dock;
 # -= ENV: ALIASES =-
 alias ll='ls -lhG';
 alias la='ls -lhAG';
@@ -70,29 +68,31 @@ export EDITOR=nano;
 export GREP_COLOR=36;
 export USERNAME=$LOGNAME;
 export HOSTNAME=$HOST;
-export du="/usr/local/lib/utils.d";
+export dirUTILS="/usr/local/lib/utils.d";
 export dirCOMMON="/Users/stephen-harold/.local/profiles/common.d";
-export dirZSH="~/.local/profiles/zsh.d";
-export dirBASH="~/.local/profiles/bash.d";
-export dirSHARE="~/.local/share";
+export dirZSH="/Users/stephen-harold/.local/profiles/zsh.d";
+export dirBASH="/Users/stephen-harold/.local/profiles/bash.d";
+export dirSHARE="/Users/stephen-harold/.local/share";
 export utilsDebug="Off";
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
 _tn=$( ps -afx | egrep -i '\-zsh' | grep -v 'grep' | wc -l );
 export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
-declare -f DEBUG;
 export DEBUG_ENABLED=1; # SET TO 1 FOR ON
 function DEBUG_FUNCTION() {
-    local scriptName=$1;
-    local message=$2;
-    [[ "$DEBUG" = 1 ]] && echo "${WHITE}-${RED}-=|] $(date +%H:%M:%S) [|=-${WHITE}-${YELLOW}-=|] ${WHITE}{scriptName:-"Not Set!"} [|=-${WHITE}-${GREEN}-=|] ${message:-"Message Variable Not Set. [|=-${WHITE}-"}${RESET}";
+    local _scriptName=$1;
+    local _message=$2;
+    [[ "$DEBUG" = 1 ]] && echo "${WHITE}-${RED}-=|] $(date +%H:%M:%S) [|=-${WHITE}-${YELLOW}-=|] ${WHITE}{_scriptName:-"Not Set!"} [|=-${WHITE}-${GREEN}-=|] ${_message:-"Message Variable Not Set. [|=-${WHITE}-"}${RESET}";
 }
-export DEBUG=DEBUG_FUNCTION;
+declare -f DEBUG;
+export DEBUG=$(DEBUG_FUNCTION $@);
 
 function precmd() {
     local _exitValue=$?;
-    local _prefix="/Users/stephen-harold/.local/profiles/zshProfile";
-    local _filePS1="$_prefix/zshPS01";
-    local _filePS2="$_prefix/zshPS02";
+    local _filePS1="$dirZSH/zshPS01";
+    local _filePS2="$dirZSH/zshPS02";
     [[ -r "$_filePS1" ]] && PS1=$( "$_filePS1" "$_exitValue" || PS1="[%n@%M] (%2~)$: ")
     [[ -r "$_filePS2" ]] && PS2=$( "$_filePS2" "$_exitValue" || PS2="(%2~)$: ")
 }
+# -= DOCK: HIDE/UNHIDE =-
+eval $(defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock);
+

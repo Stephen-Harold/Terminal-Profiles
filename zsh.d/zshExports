@@ -1,3 +1,9 @@
 #!/bin/bash
 
 # -= EXPORTS: UNIQUE TO ZSH =-;
+DEBUG=1; # Enable debugging for zsh.
+
+# unique terminal text colour configurations
+export hostDecor=$(tput setaf 57);
+export hostClr=$(tput setaf 32);
+export shellClr=$(tput setaf 92);
