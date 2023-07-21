@@ -74,9 +74,13 @@ export dirZSH="/Users/stephen-harold/.local/profiles/zsh.d";
 export dirBASH="/Users/stephen-harold/.local/profiles/bash.d";
 export dirSHARE="/Users/stephen-harold/.local/share";
 export utilsDebug="Off";
+export prompt="$dirZSH/pcmd";
+# -= Titles: Terminal Window and Title tabs =-
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
 _tn=$( ps -afx | egrep -i '\-zsh' | grep -v 'grep' | wc -l );
 export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
+# -==========================================-
+# -= Function: Global Debug for all shell scripts =-
 export DEBUG_ENABLED=1; # SET TO 1 FOR ON
 function DEBUG_FUNCTION() {
     local _scriptName=$1;
@@ -85,7 +89,23 @@ function DEBUG_FUNCTION() {
 }
 declare -f DEBUG;
 export DEBUG=$(DEBUG_FUNCTION $@);
-
+# -=========================================-
+# -= Function: Global Increment number, between 1..254, by one. Used with tput set** <color>  =-
+function incAddNum() {
+	case ${additionalNumber} in
+		231)
+	    	additionalNumber=1;
+	  	;;
+	    16)
+	    	additionalNumber=18;
+	  	;;
+		*)
+:			$((additionalNumber++));
+		;;
+	esac
+	return ${additionalNumber};
+}
+# -=========================================-
 function precmd() {
     local _exitValue=$?;
     local _filePS1="$dirZSH/zshPS01";
@@ -95,4 +115,9 @@ function precmd() {
 }
 # -= DOCK: HIDE/UNHIDE =-
 eval $(defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock);
-
+# -===========================================-
+# -= Declarations: Read & Write ==============-
+#declare -i additionalNumber=0;
+#declare -f inum=$(incAddNum);
+#export -f inum;
+# -===========================================-
