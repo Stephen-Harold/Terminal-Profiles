@@ -28,14 +28,14 @@ function textDefault() {
 	local _textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rval %{$LU$RESET%}";
 
 # 'home' -OR- $PWD
-#	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
-#		echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
-#		echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
-
 	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
-	echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}") || \
-	  				$([[ "$PWD" = "/" ]] && echo "%{${_pathDecor}${UL}%}(%{${LU}%{${WHITE}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}" || \
-  						echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
+		echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
+		echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
+
+#	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
+#	echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}") || \
+#	  				$([[ "$PWD" = "/" ]] && echo "%{${_pathDecor}${UL}%}(%{${LU}%{${WHITE}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}" || \
+#  						echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
 # The current shell notification and insert point
 	local _textShell=$( echo "%{${UL}${_shellClr}%}${SHELL//*\/}%{${LU}${RESET}${WHITE}%}:%{${RESET}%} " );
 
