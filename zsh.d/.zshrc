@@ -1,4 +1,5 @@
 #!/bin/zsh
+clear
 # -= OPTIONS RE: GLOBS & EXPANSION =-
 setopt NOMATCH              # If a pattern for filename generation has no matches print an error
 setopt MARK_DIRS            # add trailing slash always

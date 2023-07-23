@@ -9,7 +9,7 @@ function textDefault() {
 	local _rndClr=$(( $RANDOM % 254 + 1 ));
 	local _hostDecor=$(tput setaf 57);
 	local 	_hostClr=$(tput setaf $_rndClr );
-	local _pathDecor=$(tput setaf 74);
+	local _pathDecor=$(tput setaf 7);
 	local 	_pathClr=$(tput setaf 15);
 	local  _shellClr=$(tput setaf $(( $_rndClr + 2 )));
 # Home directory text with random colours for each character

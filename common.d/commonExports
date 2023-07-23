@@ -30,12 +30,19 @@ export USERNAME=$LOGNAME;
 export HOSTNAME=$HOST;
 export du="/usr/local/lib/utils.d";
 export dirCOMMON="/Users/stephen-harold/.local/profiles/common.d";
-export dirZSH="~/.local/profiles/zsh.d";
-export dirBASH="~/.local/profiles/bash.d";
-export dirSHARE="~/.local/share";
+export dirZSH="/Users/stephen-harold/.local/profiles/zsh.d";
+export dirBASH="/Users/stephen-harold/.local/profiles/bash.d";
 export utilsDebug="Off";
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
 _tn=$( ps -afx | egrep -i '\-zsh' | grep -v 'grep' | wc -l );
 export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
 
+# declaration debug function and export
+declare -f -x DEBUG;
+export DEBUG_ENABLED=1; # SET TO 1 FOR ON
 
+function DEBUG() {
+      local scriptName=$1;
+      local message=$2;
+      [[ "$DEBUG_ENABLED" = 1 ]] && echo -e "${WHITE}-${RED}-=|] $(date +%H:%M:%S) [|=-${WHITE}-${YELLOW}-=|] ${WHITE}${scriptName:-"Not Set!"} [|=-${WHITE}-${GREEN}-=|] ${message:-"Message Variable Not Set. [|=-${WHITE}-"}${RESET}";
+}

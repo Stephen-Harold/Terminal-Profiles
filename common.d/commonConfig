@@ -1,4 +1,4 @@
-#!/bin/zsh
 
 # -= DOCK: HIDE/UNHIDE =-
-defaults write com.apple.dock autohide-delay -float 0.0001; killall Dock;
+[[ $( defaults read com.apple.dock autohide-delay ) != 0.0005 ]] && \
+      $( defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock )

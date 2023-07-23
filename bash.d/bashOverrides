@@ -14,11 +14,6 @@ function precmd() {
     [[ -r $filePS2 ]] && PS2=$( $filePS2 $exitValue || PS2="(%2~)$: ")
 }
 
-# -= TITLES (TERMINAL & TERMINAL TAB): CHPWD HOOK OVERRIDE =-
-function chpwd() {
-#    echo -ne "\033]0; ( ${PWD} ) [ $USERNAME@$HOSTNAME ] $(date +"%A %d %b %G  |  %H:%M") \007"; # Window Title
-}
-
 function periodic() {
     if [ $_tn -gt 1 ]
     then
