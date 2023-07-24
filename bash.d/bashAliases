@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bash alisises" "Executing";
+
+# -= ALIASES:  UNIQUE TO ZSH  =-

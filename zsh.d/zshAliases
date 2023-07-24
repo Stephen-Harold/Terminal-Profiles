@@ -1,0 +1,3 @@
+#!/usr/local//bin/bash
+DEBUG "zshAlieses" "Executing";
+# -= ALIASES:  UNIQUE TO ZSH  =-

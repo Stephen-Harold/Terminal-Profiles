@@ -1,28 +1,37 @@
 #!/usr/local/bin/bash
 clear
-
+export DEBUG_ENABLED=1; # Enable debugging for bash.
+[[ $(type DEBUG) =~ 'function' ]] &&
+# -= DOCK: HIDE/UNHIDE =-
+[[ $( defaults read com.apple.dock autohide-delay ) != 0.0005 ]] && \
+	  $( defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock )
 # -= FILES: SOURCE PROFILE FILES =-
 function sourceProfile() {
-	declare -a arrayBashSourcedFiles;
+	declare -A arrayBashSourcedFiles;
 	arrayBashSourcedFiles=( \
-			"/Users/stephen-harold/.local/profiles/common.d/commonConfig" \
-			"/Users/stephen-harold/.local/profiles/common.d/commonExports" \
-			"$dirCOMMON/commonAilieses" \
-			"$dirCOMMON/commonOverrides" \
-			"$dirCOMMON/commonPeriodics" \
-			"$dirBASH/bashExports" \
-			"$dirBASH/bashAiliases" \
-			"$dirBASH/bashOverrides" );
+			['1']="$HOME/.local/profiles/common.d/commonExports" \
+			['2']="$dirCOMMON/commonAilieses" \
+			['3']="$dirCOMMON/commonOverrides" \
+			['4']="$dirCOMMON/commonPeriodics" \
+			['5']="$dirBASH/bashExports" \
+			['6']="$dirBASH/bashAliases" \
+			['7']="$dirBASH/bashOverrides" );
 
-	for number in {0..7}
+	for number in {1..7}
 	do
 		local thisFile=${arrayBashSourcedFiles[$number]};
-		[[ -r $thisFile ]] && source $thisFile || echo -e "$number. \e[0;31mFile \e[0;4;31mnot\e[m \e[0;31mfound:\e[1;37m $thisFile \e[m"
-		# ß$( DEBUG "bashProfile" "$index. Called source on $thisFile." );
+		if [[ ! -z $thisFile ]]
+		then
+			source "$thisFile";
+			[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "$number. Calling source on \e[1;35m$thisFile\e[m.";
+		else
+			echo -e "$number. \e[0;31mFile \e[0;4;31mnot\e[m \e[0;31mfound:\e[1;35m$thisFile\e[m.";
+		fi
+		[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "$number. Processed \e[0;34m$thisFile\e[m.";
 	done
-	#$( DEBUG "bashProfile" "Called source on all "${#arrayBashSourcedFiles[*]}" files in total." );
+	[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "Called source on all "${#arrayBashSourcedFiles[*]}" files in the array.";
 }
 
 sourceProfile;
-unset -f sourceProfile;
-#$( DEBUG "bashProfile" "Complete" );
+[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "Complete";
+cd "/Users/stephen-harold/";

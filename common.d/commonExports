@@ -1,5 +1,6 @@
-#!/bin/bash
-
+#!/usr/local//bin/bash
+filename=$0;
+[[ $(type DEBUG) =~ 'function' ]] && DEBUG "${filename}" "executing (DEBUG is defined)" # This will never be seen!
 # terminal foreground text colours
 export RED=$( tput setaf 160);
 export GREEN=$(tput setaf 40);
@@ -26,23 +27,26 @@ export BlueOnBlue=$(tput setab 17; tput setaf 12;);
 export PAGER=less;
 export EDITOR=nano;
 export GREP_COLOR=36;
-export USERNAME=$LOGNAME;
-export HOSTNAME=$HOST;
+export USERNAME=${LOGNAME};
+export HOSTNAME=${HOST};
 export du="/usr/local/lib/utils.d";
 export dirCOMMON="/Users/stephen-harold/.local/profiles/common.d";
 export dirZSH="/Users/stephen-harold/.local/profiles/zsh.d";
 export dirBASH="/Users/stephen-harold/.local/profiles/bash.d";
 export utilsDebug="Off";
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
-_tn=$( ps -afx | egrep -i '\-zsh' | grep -v 'grep' | wc -l );
-export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
+# _tn=$( ps -afx | grep -i -E  '\-zsh' | grep -v 'grep' | wc -l );
+# export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
 
 # declaration debug function and export
 declare -f -x DEBUG;
-export DEBUG_ENABLED=1; # SET TO 1 FOR ON
-
 function DEBUG() {
       local scriptName=$1;
       local message=$2;
-      [[ "$DEBUG_ENABLED" = 1 ]] && echo -e "${WHITE}-${RED}-=|] $(date +%H:%M:%S) [|=-${WHITE}-${YELLOW}-=|] ${WHITE}${scriptName:-"Not Set!"} [|=-${WHITE}-${GREEN}-=|] ${message:-"Message Variable Not Set. [|=-${WHITE}-"}${RESET}";
+      [[ "${DEBUG_ENABLED}" = 1 ]] && \
+            printf "${WHITE}DEBUG| %-16s ${WHITE}|| %-32s ${WHITE}||| %-120s ${WHITE}||||${RESET}\n" \
+                  "${RED}$(date +%H:%M:%S)" \
+                  "${YELLOW}${scriptName:-"Not Set!"}" \
+                  "${GREEN}${message:-"Message Variable Not Set"}";
 }
+#ß    export -f DEBUG;

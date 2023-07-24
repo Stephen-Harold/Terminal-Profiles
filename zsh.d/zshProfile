@@ -1,20 +1,48 @@
-#!/bin/zsh
+#!/usr/local//bin/bash
+[[ -n ${DEBUG_ENABLED} ]] && export DEBUG_ENABLED=0;
 
+function dbg() {
+	local script=$1;
+	local msg=$2;
+	if [[ $(type DEBUG) =~ 'function' ]]
+	then
+		DEBUG "${script}" "${msg}";
+	else
+		[[ ${DEBUG_ENABLED} = 1 ]] && printf "%-24s%-80s\n" "${script}" "${msg}"
+	fi
+}
 
-declare -A arrayProfiles=(
-	['0']="/Users/stephen-harold/.local/profiles/common.d/commonExports"
-	['1']="/Users/stephen-harold/.local/profiles/common.d/commonConfig"
-	['2']="/Users/stephen-harold/.local/profiles/common.d/commonAilieses"
-	['3']="/Users/stephen-harold/.local/profiles/common.d/commonOverrides"
-	['4']="/Users/stephen-harold/.local/profiles/common.d/commonPeriodics"
-	['5']="/Users/stephen-harold/.local/profiles/zshProfiles/zshOptions"
-	['6']="/Users/stephen-harold/.local/profiles/zshProfiles/zshExports"
-	['7']="/Users/stephen-harold/.local/profiles/zshProfiles/zshAlieses"
-	['8']="/Users/stephen-harold/.local/profiles/zshProfiles/zshOverrides" );
+function processProfile(){
+	declare -A arrayProfiles=(
+		['1']="/Users/stephen-harold/.local/profiles/common.d/commonExports"
+		['2']="/Users/stephen-harold/.local/profiles/common.d/commonConfig"
+		['3']="/Users/stephen-harold/.local/profiles/common.d/commonAliases"
+		['4']="/Users/stephen-harold/.local/profiles/common.d/commonOverrides"
+		['5']="/Users/stephen-harold/.local/profiles/common.d/commonPeriodics"
+		['6']="/Users/stephen-harold/.local/profiles/zsh.d/zshOptions"
+		['7']="/Users/stephen-harold/.local/profiles/zsh.d/zshExports"
+		['8']="/Users/stephen-harold/.local/profiles/zsh.d/zshAliases"
+		['9']="/Users/stephen-harold/.local/profiles/zsh.d/zshOverrides" );
+	local xnum=0;
+	for num in {1..9}
+	do
+		thisFile=${arrayProfiles[${num}]};
+		# shellcheck disable=SC1090
+		[[ -z ${thisFile} ]] && dbg "zshProfile" "Interation No.${num} has NULL value" && continue
+		[[ ! -r ${thisFile} ]] && dbg "zshProfile" "FILE NOT FOUND ${thisFile}" && continue
+		dbg "zshProfile" "${num}. Calling source on ${thisFile}";
+		# shellcheck disable=SC1090
+		source "${thisFile}";
+	:	$((xnum++));
+	done
 
-for _num in {0..8}
-do
-	_thisFile=${arrayProfiles[$_num]};
-	[[ -r "$_thisFile" ]] && DEBUG "zshProfile" "$_num. Calling source on ${WHITE}  "$_thisFile" ${RESET}."; source "$_thisFile" || echo "zshProfile" "$_num. ${RED}File not found:${WHITE} "$_thisFile" ${RESET}"
-done
-DEBUG "zshProfile" "Called source on all "${#arrayProfiles[*]}" files in total.";
+	dbg "zshProfile" "Called source on all ${xnum} files in total. Last file was ${arrayProfiles[${xnum}]}";
+	unset arrayProfiles;
+}
+
+# Entry Point
+#ßecho "-= ZSH Profile =-= LOAD =-";
+processProfile;
+dbg "ZSH Profile" "LOAD COMPLETE";
+[[ ${xnum} != 9 ]] && return "${xnum}"
+

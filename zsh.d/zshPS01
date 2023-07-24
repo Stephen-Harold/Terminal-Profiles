@@ -1,46 +1,87 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 # -= Windows License Key: RPCP7-N6BC2-FVW96-TYFPP-CKCKG =-
 lastErrorValue=${1:-0}; # If Var $1 is not defined it's default will be 0.
-function textDefault() {
+
+function DEBUG() {
+	  local scriptName=$1;
+	  local message=$2;
+	  [[ "${DEBUG_ENABLED}" = 1 ]] && \
+			printf "${WHITE}DEBUG| %-16s ${WHITE}|| %-32s ${WHITE}||| %-120s ${WHITE}||||${RESET}\n" \
+				  "${RED}$(date +%H:%M:%S)" \
+				  "${YELLOW}${scriptName:-"Not Set!"}" \
+				  "${GREEN}${message:-"Message Variable Not Set"}";
+}
+
+function dbg() {
+	local script=$1;
+	local msg=$2;
+	if [[ $(type DEBUG) =~ 'function' ]]
+	then
+		DEBUG "${script}" "${msg}";
+	else
+		[[ ${DEBUG_ENABLED} = 1 ]] && echo "${msg}"
+	fi
+}
+
+function textDefaultZSHPS01() {
 # -= PROMPT: Preconfigured text snippets =-
 # Catch return value before any other command executes
 	local _rval=$1;
 # unique terminal text colour configurations
-	local _rndClr=$(( $RANDOM % 254 + 1 ));
-	local _hostDecor=$(tput setaf 57);
-	local 	_hostClr=$(tput setaf $_rndClr );
-	local _pathDecor=$(tput setaf 7);
-	local 	_pathClr=$(tput setaf 15);
-	local  _shellClr=$(tput setaf $(( $_rndClr + 2 )));
+	local _rndNum=$(( RANDOM % 254 + 1 ));
+	dbg "zshPS01" "Generated random number, value: ${_rndNum}"
+	local _hostDecor;
+	_hostDecor=$(tput setaf 57);
+	local _hostClr;
+	_hostClr=$(tput setaf ${_rndNum} );
+	local _pathDecor;
+	_pathDecor=$(tput setaf 7);
+	local _pathClr;
+	_pathClr=$(tput setaf 15);
+	local _shellClr;
+	_shellClr=$(tput setaf $(( _rndNum + 2 )));
 # Home directory text with random colours for each character
-	local _home=$( tput setaf $(( $RANDOM % 254 + 1 )); printf "H"; \
-					tput setaf $(( $RANDOM % 254 + 1 )); printf "o"; \
-					tput setaf $(( $RANDOM % 254 + 1 )); printf "m"; \
-							tput setaf $(( $RANDOM % 254 + 1 )); printf "e"; \
-					tput sgr0; );
+	local _home;
+	_home=$( tput setaf $(( RANDOM % 254 + 1 )); printf "H"; \
+			 tput setaf $(( RANDOM % 254 + 1 )); printf "o"; \
+			 tput setaf $(( RANDOM % 254 + 1 )); printf "m"; \
+			 tput setaf $(( RANDOM % 254 + 1 )); printf "e"; \
+			 tput sgr0; );
+
+	dbg "zshPS01" "Set text variables colors."
 # Current time in 24hr clock
-	local _textTime="${BlueOnBlue}${UL}|$(date +%H:%M)|${LU}${RESET}";
+	local _textTime;
+	# shellcheck disable=SC2154
+	_textTime="${BlueOnBlue}${UL}|$(date +%H:%M)|${LU}${RESET}";
 
 # MacBook name
-	local _textHost="%{${_hostDecor}${UL}${_hostClr}%}${HOSTNAME//\.*}%{${_hostDecor}${LU}${RESET}%}";
+	local _textHost;
+	_textHost="%{${_hostDecor}${UL}${_hostClr}%}${HOSTNAME//\.*}%{${_hostDecor}${LU}${RESET}%}";
 
 # Error text when return value isn't zero
-	local _textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rval %{$LU$RESET%}";
+	local _textError;
+	# shellcheck disable=SC2154,SC2250
+	_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rval %{$LU$RESET%}";
 
 # 'home' -OR- $PWD
-	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
+	local _textPath;
+	_textPath=$([[ "${PWD}" = "/Users/stephen-harold" ]] && \
 		echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
 		echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
 
-#	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && \
-#	echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}") || \
-#	  				$([[ "$PWD" = "/" ]] && echo "%{${_pathDecor}${UL}%}(%{${LU}%{${WHITE}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}" || \
-#  						echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
 # The current shell notification and insert point
-	local _textShell=$( echo "%{${UL}${_shellClr}%}${SHELL//*\/}%{${LU}${RESET}${WHITE}%}:%{${RESET}%} " );
+	local _textShell;
+	# shellcheck disable=SC2288
+	local shl="zsh";
+	_textShell="%{${UL}${_shellClr}%}${shl}%{${LU}${RESET}${WHITE}%}:%{${RESET}%}";
 
-	printf "%s %s %s" "$([[ "$lastErrorValue" != 0 ]] && echo $_textError || echo $_textHost)" "$_textPath" "$_textShell";
+	dbg "zshPS01" "Set all text variables values"
+
+	printf "%s %s %s " "$([[ "${lastErrorValue}" != 0 ]] && echo "${_textError}" || echo "${_textHost}" )" "${_textPath}" "${_textShell}";
+
+	dbg "zshPS01" "Called 'printf' using text vaiables."
 }
 
 # Print to PS1 definition in .zshrc
-textDefault $lastErrorValue;
+textDefaultZSHPS01 "${lastErrorValue}";
+dbg "zshPS01" "Exiting script."

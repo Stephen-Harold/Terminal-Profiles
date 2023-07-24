@@ -1,26 +1,14 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
-# -= DOCK: HIDE/UNHIDE =-
-defaults write com.apple.dock autohide-delay -float 0.0001; killall Dock;
+[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bash overrides" "Executing";
 
-# -= PROMPT: PRECMD HOOK OVERIDE =-
-function precmd() {
-    local exitValue=$?;
-    local prefix="/Users/stephen-harold/.local/profiles/bash.d";
-		local filePS1="$prefix/PS01";
-    local filePS2="$prefix/PS02";
-	[[ -r $_vars ]] && source $_vars
-    [[ -r $filePS1 ]] && PS1=$( $filePS1 $exitValue || PS1="[%n@%M] (%2~)$: ")
-    [[ -r $filePS2 ]] && PS2=$( $filePS2 $exitValue || PS2="(%2~)$: ")
+function setPrompt() {
+    local _returnValue=$1;
+    local _ps1File="$dirBASH/bashPS01";
+    local _ps2File="$dirBASH/bashPS02";
+    [[ -r $_ps1File ]] && export PS1=$( $_ps1File $_retrunValue ) || export PS1="[\u@\h](\w)$: "
+    [[ -r $_ps2File ]] && export PS1=$( $_ps2File $_retrunValue ) || export PS2="(\w)$: "
 }
 
-function periodic() {
-    if [ $_tn -gt 1 ]
-    then
-        print -Pn "\e]2;$(uptime);\a" # Terminal Title
-        print -Pn "\e]1; %m: %n  (  ${PWD/$HOME/'Home'}  ) \a" # Tab Title, when there's 2 or more tabs
-    else
-        print -Pn "\e]2;$(uptime);\a" # Terminal Title
-    fi
-}
-export PERIOD=1
+
+PROMPT_COMMAND=setPrompt "$?";

@@ -1,3 +1,11 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
-# -= EXPORTS: UNIQUE TO ZSH =-;
+[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bash exports" "Executing";
+
+# -= EXPORTS: UNIQUE TO BASH =-;
+
+export RANDOM_NUMBER=$(( $RANDOM % 254 + 1 ));
+# unique terminal text colour configurations
+export hostDecor=$(tput setaf 190);
+export hostClr=$(tput setaf 194);
+export shellClr=$(tput setaf $RANDOM_NUMBER);

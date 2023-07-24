@@ -1,5 +1,6 @@
-#!/bin/zsh
+#!/usr/local/bin/bash
 
+DEBUG "commonAliases" "Executing";
 # -= ENV: ALIASES =-
 alias ll='ls -lhG';
 alias la='ls -lhAG';

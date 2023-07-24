@@ -1,12 +1,12 @@
-#!/bin/zsh
+#!/usr/local/bin/bash
 
+DEBUG "commonPeriodics" "Executing";
+
+# Set terminal title and tabs titles
 function periodic() {
-    if [ $_tn -gt 1 ]
-    then
-        print -Pn "\e]2;$(uptime);\a" # Terminal Title
-        print -Pn "\e]1; %m: %n  (  ${PWD/$HOME/'Home'}  ) \a" # Tab Title, when there's 2 or more tabs
-    else
-        print -Pn "\e]2;$(uptime);\a" # Terminal Title
-    fi
+    print -Pn "\e]2;$(uptime);\a" # Terminal Title
+
+    local tabCount="$( pgrep zsh | wc -l | tr -d '[:space:]' && echo )"
+    [[ $tabCount != 0 ]] && print -Pn "\e]1; %m: %n  (  ${PWD/$HOME/'Home'}  ) \a" # Tabs Titles, when there is multiple tabs
 }
 export PERIOD=1
