@@ -1,12 +1,13 @@
 #!/usr/local/bin/bash
 
 DEBUG "commonPeriodics" "Executing";
+# Home directory text with random colours for each character
 
 # Set terminal title and tabs titles
 function periodic() {
     print -Pn "\e]2;$(uptime);\a" # Terminal Title
-
-    local tabCount="$( pgrep zsh | wc -l | tr -d '[:space:]' && echo )"
-    [[ $tabCount != 0 ]] && print -Pn "\e]1; %m: %n  (  ${PWD/$HOME/'Home'}  ) \a" # Tabs Titles, when there is multiple tabs
+    local tabCount
+    tabCount="$( pgrep zsh | wc -l | tr -d '[:space:]' && echo )"
+    [[ ${tabCount} != 0 ]] && print -Pn "\e]1; %m: %n  (  ${_}  ) \a" # Tabs Titles, when there is multiple
 }
 export PERIOD=1

@@ -2,13 +2,15 @@
 returnValue=$1;
 
 function textErrorFunction() {
-	echo "%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $returnValue %{${LU}${RESET}%}";
+	echo "%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} ${returnValue} %{${LU}${RESET}%} ${_textShellPink}\:> ";
 }
 
-function returnPrompt()	{
-	local _textPath=$([[ "$PWD" = "/Users/stephen-harold" ]] && echo "%{${WHITE}%}('${home}%{${WHITE}%}')%{${RESET}%}" || echo "%{${WHITE}%}(%2~%{${CYAN}%}/%{${WHITE}%})%{${RESET}%}");
-	local _textShellPink=$( echo "%{${PINK}%}${SHELL//*\/}%{${RESET}%}" );
-	return $( [[ "${returnValue}" != 0 ]] && echo textErrorFunction $returnValue || echo $_textPath ) $_textShellPink"\:> ";
+function echoPrompt()	{
+	local _textPath;
+	_textPath=$([[ "${PWD}" = "/Users/stephen-harold" ]] && echo "%{${WHITE}%}('${home}%{${WHITE}%}')%{${RESET}%}" || echo "%{${WHITE}%}(%2~%{${CYAN}%}/%{${WHITE}%})%{${RESET}%}");
+	local _textShellPink="%{${PINK}%}${SHELL//*\/}%{${RESET}%}";
+	[[ "${returnValue}" != 0 ]] && echo textErrorFunction "${returnValue}" || echo "${_textPath} ${_textShellPink}\:> ";
 }
 
-echo returnPrompt;
+echo echoPrompt;
+unset returnValue;

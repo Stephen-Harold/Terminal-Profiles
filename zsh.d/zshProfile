@@ -1,6 +1,8 @@
 #!/usr/local//bin/bash
-[[ -n ${DEBUG_ENABLED} ]] && export DEBUG_ENABLED=0;
-
+# Set to 1 to enable debugging
+debug_enabled=0;
+[[ -n ${dPROFILES_DEBUG} ]] && export dPROFILES_DEBUG=${debug_enabled};
+# # shellcheck disable=SC2050
 function dbg() {
 	local script=$1;
 	local msg=$2;
@@ -8,7 +10,7 @@ function dbg() {
 	then
 		DEBUG "${script}" "${msg}";
 	else
-		[[ ${DEBUG_ENABLED} = 1 ]] && printf "%-24s%-80s\n" "${script}" "${msg}"
+		[[ ${dPROFILES_DEBUG} = 1 ]] && printf "%-24s%-80s\n" "${script}" "${msg}"
 	fi
 }
 
@@ -41,7 +43,7 @@ function processProfile(){
 }
 
 # Entry Point
-#ßecho "-= ZSH Profile =-= LOAD =-";
+# echo "-= ZSH Profile =-= LOAD =-";
 processProfile;
 dbg "ZSH Profile" "LOAD COMPLETE";
 [[ ${xnum} != 9 ]] && return "${xnum}"

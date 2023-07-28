@@ -2,25 +2,42 @@
 filename=$0;
 [[ $(type DEBUG) =~ 'function' ]] && DEBUG "${filename}" "executing (DEBUG is defined)" # This will never be seen!
 # terminal foreground text colours
-export RED=$( tput setaf 160);
-export GREEN=$(tput setaf 40);
-export BLUE=$(tput setaf 33);
-export WHITE=$(tput setaf 15);
-export YELLOW=$(tput setaf 220);
-export CYAN=$(tput setaf 51);
-export BLACK=$(tput setaf 232);
-export PURPLE=$(tput setaf 56);
-export PINK=$(tput setaf 201);
-export TEAL=$(tput setaf 41);
+declare -gx RED;
+RED=$( tput setaf 160);
+declare -gx GREEN;
+GREEN=$(tput setaf 40);
+declare -gx BLUE;
+BLUE=$(tput setaf 33);
+declare -gx WHITE;
+WHITE=$(tput setaf 15);
+declare -gx YELLOW;
+YELLOW=$(tput setaf 220);
+declare -gx CYAN;
+CYAN=$(tput setaf 51);
+declare -gx BLACK;
+BLACK=$(tput setaf 232);
+declare -gx PURPLE;
+PURPLE=$(tput setaf 56);
+declare -gx PINK;
+PINK=$(tput setaf 201);
+declare -gx TEAL;
+TEAL=$(tput setaf 41);
 # terminal text decorations
-export BOLD=$(tput bold);
-export UL=$(tput smul);
-export LU=$(tput rmul);
-export RESET=$(tput sgr0);
+declare -gx BOLD;
+BOLD=$(tput bold);
+declare -gx UL;
+UL=$(tput smul);
+declare -gx LU;
+LU=$(tput rmul);
+declare -gx RESET;
+RESET=$(tput sgr0);
 # terminal text colours, foreground & background
-export redOnWhite=$(tput setab 15; tput setaf 1;);
-export whiteOnRed=$(tput setab 1; tput setaf 15;);
-export BlueOnBlue=$(tput setab 17; tput setaf 12;);
+declare -gx redOnWhite;
+redOnWhite=$(tput setab 15; tput setaf 1;);
+declare -gx whiteOnRed;
+whiteOnRed=$(tput setab 1; tput setaf 15;);
+declare -gx BlueOnBlue;
+BlueOnBlue=$(tput setab 17; tput setaf 12;);
 
 
 # -= ENV: EXPORTS =-
@@ -30,10 +47,11 @@ export GREP_COLOR=36;
 export USERNAME=${LOGNAME};
 export HOSTNAME=${HOST};
 export du="/usr/local/lib/utils.d";
-export dirCOMMON="/Users/stephen-harold/.local/profiles/common.d";
-export dirZSH="/Users/stephen-harold/.local/profiles/zsh.d";
-export dirBASH="/Users/stephen-harold/.local/profiles/bash.d";
-export utilsDebug="Off";
+export dCOMMON="/Users/stephen-harold/.local/profiles/common.d";
+export dZSH="/Users/stephen-harold/.local/profiles/zsh.d";
+export dBASH="/Users/stephen-harold/.local/profiles/bash.d";
+export dUTILS_DEBUG="Off";
+export dPROFILES_DEBUG="Off";
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
 # _tn=$( ps -afx | grep -i -E  '\-zsh' | grep -v 'grep' | wc -l );
 # export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
@@ -41,12 +59,12 @@ export utilsDebug="Off";
 # declaration debug function and export
 declare -f -x DEBUG;
 function DEBUG() {
-      local scriptName=$1;
-      local message=$2;
-      [[ "${DEBUG_ENABLED}" = 1 ]] && \
-            printf "${WHITE}DEBUG| %-16s ${WHITE}|| %-32s ${WHITE}||| %-120s ${WHITE}||||${RESET}\n" \
-                  "${RED}$(date +%H:%M:%S)" \
-                  "${YELLOW}${scriptName:-"Not Set!"}" \
-                  "${GREEN}${message:-"Message Variable Not Set"}";
+        local scriptName=$1;
+        local message=$2;
+        [[ "${dPROFILES_DEBUG}" = 1 ]] && \
+                  printf "${WHITE}DEBUG| %-16s ${WHITE}|| %-32s ${WHITE}||| %-120s ${WHITE}||||${RESET}\n" \
+                          "${RED}$(date +%H:%M:%S)" \
+                          "${YELLOW}${scriptName:-"Not Set!"}" \
+                          "${GREEN}${message:-"Message Variable Not Set"}";
 }
-#ß    export -f DEBUG;
+#    export -f DEBUG;

@@ -5,7 +5,7 @@ lastErrorValue=${1:-0}; # If Var $1 is not defined it's default will be 0.
 function DEBUG() {
 	  local scriptName=$1;
 	  local message=$2;
-	  [[ "${DEBUG_ENABLED}" = 1 ]] && \
+	  [[ "${dPROFILES_DEBUG}" = 1 ]] && \
 			printf "${WHITE}DEBUG| %-16s ${WHITE}|| %-32s ${WHITE}||| %-120s ${WHITE}||||${RESET}\n" \
 				  "${RED}$(date +%H:%M:%S)" \
 				  "${YELLOW}${scriptName:-"Not Set!"}" \
@@ -19,7 +19,7 @@ function dbg() {
 	then
 		DEBUG "${script}" "${msg}";
 	else
-		[[ ${DEBUG_ENABLED} = 1 ]] && echo "${msg}"
+		[[ ${dPROFILES_DEBUG} = 1 ]] && echo "${msg}"
 	fi
 }
 
@@ -29,6 +29,7 @@ function textDefaultZSHPS01() {
 	local _rval=$1;
 # unique terminal text colour configurations
 	local _rndNum=$(( RANDOM % 254 + 1 ));
+	export RANDOM_NUMBER="${_rndNum}";
 	dbg "zshPS01" "Generated random number, value: ${_rndNum}"
 	local _hostDecor;
 	_hostDecor=$(tput setaf 57);
@@ -42,7 +43,7 @@ function textDefaultZSHPS01() {
 	_shellClr=$(tput setaf $(( _rndNum + 2 )));
 # Home directory text with random colours for each character
 	local _home;
-	_home=$( tput setaf $(( RANDOM % 254 + 1 )); printf "H"; \
+	_home=$( tput setaf $(( RANDOM % 254 + 1 )); printf "h"; \
 			 tput setaf $(( RANDOM % 254 + 1 )); printf "o"; \
 			 tput setaf $(( RANDOM % 254 + 1 )); printf "m"; \
 			 tput setaf $(( RANDOM % 254 + 1 )); printf "e"; \
@@ -65,9 +66,21 @@ function textDefaultZSHPS01() {
 
 # 'home' -OR- $PWD
 	local _textPath;
-	_textPath=$([[ "${PWD}" = "/Users/stephen-harold" ]] && \
-		echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
-		echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
+	case ${PWD} in
+		"/Users/stephen-harold")
+		_textPath="%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}";
+		;;
+		"/var/root")
+		_textPath="%{${WHITE}%}('${RED}/VAR/ROOT%{${WHITE}%}')%{${RESET}%}";
+		;;
+		*)
+		_textPath="%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}";
+		;;
+	esac
+
+	# _textPath=$([[ "${PWD}" = "/Users/stephen-harold" ]] && \
+	# 	echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
+	# 	echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
 
 # The current shell notification and insert point
 	local _textShell;
@@ -79,9 +92,9 @@ function textDefaultZSHPS01() {
 
 	printf "%s %s %s " "$([[ "${lastErrorValue}" != 0 ]] && echo "${_textError}" || echo "${_textHost}" )" "${_textPath}" "${_textShell}";
 
-	dbg "zshPS01" "Called 'printf' using text vaiables."
+	#dbg "zshPS01" "Called 'printf' using text variables."
 }
 
 # Print to PS1 definition in .zshrc
 textDefaultZSHPS01 "${lastErrorValue}";
-dbg "zshPS01" "Exiting script."
+#dbg "zshPS01" "Exiting script."
