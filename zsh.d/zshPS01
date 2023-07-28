@@ -29,7 +29,6 @@ function textDefaultZSHPS01() {
 	local _rval=$1;
 # unique terminal text colour configurations
 	local _rndNum=$(( RANDOM % 254 + 1 ));
-	export RANDOM_NUMBER="${_rndNum}";
 	dbg "zshPS01" "Generated random number, value: ${_rndNum}"
 	local _hostDecor;
 	_hostDecor=$(tput setaf 57);
@@ -49,6 +48,7 @@ function textDefaultZSHPS01() {
 			 tput setaf $(( RANDOM % 254 + 1 )); printf "e"; \
 			 tput sgr0; );
 
+	export RANDOM_NUMBER=$((_rndNum++));
 	dbg "zshPS01" "Set text variables colors."
 # Current time in 24hr clock
 	local _textTime;
@@ -61,8 +61,8 @@ function textDefaultZSHPS01() {
 
 # Error text when return value isn't zero
 	local _textError;
-	# shellcheck disable=SC2154,SC2250
-	_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rval %{$LU$RESET%}";
+	# shellcheck disable=SC2154,SC2250,SC2288,SC2086
+	_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $(seq -f '%03g' $_rval) %{$LU$RESET%}";
 
 # 'home' -OR- $PWD
 	local _textPath;
