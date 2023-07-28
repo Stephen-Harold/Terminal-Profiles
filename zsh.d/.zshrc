@@ -69,20 +69,20 @@ export EDITOR=nano;
 export GREP_COLOR=36;
 export USERNAME=$LOGNAME;
 export HOSTNAME=$HOST;
-export dirUTILS="/usr/local/lib/utils.d";
-export dirCOMMON="/Users/stephen-harold/.local/profiles/common.d";
-export dirZSH="/Users/stephen-harold/.local/profiles/zsh.d";
-export dirBASH="/Users/stephen-harold/.local/profiles/bash.d";
-export dirSHARE="/Users/stephen-harold/.local/share";
-export utilsDebug="Off";
-export prompt="$dirZSH/pcmd";
+export dUTILS="/usr/local/lib/utils.d";
+export dCOMMON="/Users/stephen-harold/.local/profiles/common.d";
+export dZSH="/Users/stephen-harold/.local/profiles/zsh.d";
+export dBASH="/Users/stephen-harold/.local/profiles/bash.d";
+export dSHARE="/Users/stephen-harold/.local/share";
+export dUTILS_DEBUG="Off";
+export PROMPT="$dirZSH/pcmd";
 # -= Titles: Terminal Window and Title tabs =-
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
 _tn=$( ps -afx | egrep -i '\-zsh' | grep -v 'grep' | wc -l );
 export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
 # -==========================================-
 # -= Function: Global Debug for all shell scripts =-
-export DEBUG_ENABLED=1; # SET TO 1 FOR ON
+export dPROFILES_DEBUG=0; # SET TO 1 FOR ON
 function DEBUG_FUNCTION() {
     local _scriptName=$1;
     local _message=$2;

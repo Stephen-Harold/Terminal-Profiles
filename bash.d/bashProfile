@@ -1,37 +1,38 @@
 #!/usr/local/bin/bash
 clear
-export DEBUG_ENABLED=1; # Enable debugging for bash.
-[[ $(type DEBUG) =~ 'function' ]] &&
+# Set to 1 to enable debugging
+debug_enabled=0;
+[[ -n ${dPROFILES_DEBUG} ]] && export dPROFILES_DEBUG=${debug_enabled};
 # -= DOCK: HIDE/UNHIDE =-
 [[ $( defaults read com.apple.dock autohide-delay ) != 0.0005 ]] && \
-	  $( defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock )
+	  defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock
 # -= FILES: SOURCE PROFILE FILES =-
 function sourceProfile() {
-	declare -A arrayBashSourcedFiles;
-	arrayBashSourcedFiles=( \
-			['1']="$HOME/.local/profiles/common.d/commonExports" \
-			['2']="$dirCOMMON/commonAilieses" \
-			['3']="$dirCOMMON/commonOverrides" \
-			['4']="$dirCOMMON/commonPeriodics" \
-			['5']="$dirBASH/bashExports" \
-			['6']="$dirBASH/bashAliases" \
-			['7']="$dirBASH/bashOverrides" );
-
-	for number in {1..7}
+	declare -A arrayBashProfiles;
+	arrayBashProfiles=( \
+			['1']="${HOME}/.local/profiles/common.d/commonExports" \
+			['2']="/Users/stephen-harold/.local/profiles/common.d/commonAilieses" \
+			['3']="/Users/stephen-harold/.local/profiles/common.d/commonOverrides" \
+			['4']="/Users/stephen-harold/.local/profiles/common.d/commonPeriodics" \
+			['5']="/Users/stephen-harold/.local/profiles/bash.d/bashExports" \
+			['6']="/Users/stephen-harold/.local/profiles/bash.d/bashAliases" \
+			['7']="/Users/stephen-harold/.local/profiles/bash.d/bashOverrides" );
+	local xnum=0;
+	for num in {1..9}
 	do
-		local thisFile=${arrayBashSourcedFiles[$number]};
-		if [[ ! -z $thisFile ]]
-		then
-			source "$thisFile";
-			[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "$number. Calling source on \e[1;35m$thisFile\e[m.";
-		else
-			echo -e "$number. \e[0;31mFile \e[0;4;31mnot\e[m \e[0;31mfound:\e[1;35m$thisFile\e[m.";
-		fi
-		[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "$number. Processed \e[0;34m$thisFile\e[m.";
+		thisFile=${arrayBashProfiles[${num}]};
+		# shellcheck disable=SC1090
+		[[ -z ${thisFile} ]] && dbg "bashProfile" "Interation No.${num} has NULL value" && continue
+		[[ ! -r ${thisFile} ]] && dbg "bashProfile" "FILE NOT FOUND ${thisFile}" && continue
+		dbg "bashProfile" "${num}. Calling source on ${thisFile}";
+		# shellcheck disable=SC1090
+		source "${thisFile}";
+		:	$((xnum++));
 	done
-	[[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "Called source on all "${#arrayBashSourcedFiles[*]}" files in the array.";
+
+	dbg "bashProfile" "Called source on all ${xnum} files in total. Last file was ${arrayBashProfiles[${xnum}]}";
+	unset arrayBashProfiles;
 }
 
 sourceProfile;
 [[ $(type DEBUG) =~ 'function' ]] && DEBUG "bashProfile" "Complete";
-cd "/Users/stephen-harold/";

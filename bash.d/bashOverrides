@@ -1,14 +1,16 @@
 #!/usr/local/bin/bash
+# shellcheck disable=SC2155
 
 [[ $(type DEBUG) =~ 'function' ]] && DEBUG "bash overrides" "Executing";
 
 function setPrompt() {
     local _returnValue=$1;
-    local _ps1File="$dirBASH/bashPS01";
-    local _ps2File="$dirBASH/bashPS02";
-    [[ -r $_ps1File ]] && export PS1=$( $_ps1File $_retrunValue ) || export PS1="[\u@\h](\w)$: "
-    [[ -r $_ps2File ]] && export PS1=$( $_ps2File $_retrunValue ) || export PS2="(\w)$: "
+    [[ -z ${dBASH} ]] && export PS1="[\u@\h](\w)$: "; export PS2="(\w)$: "
+    local _ps1File="${dBASH}/bashPS01";
+    local _ps2File="${dBASH}/bashPS02";
+    [[ -r ${_ps1File} ]] && export PS1=$( ${_ps1File} "${_retrunValue}" )
+    [[ -r ${_ps2File} ]] && export PS1=$( ${_ps2File} "${_retrunValue}" )
+    [[ -z ${PS1} ]] && export PS1="[\u@\h](\w)$: "; export PS2="(\w)$: "
 }
-
 
 PROMPT_COMMAND=setPrompt "$?";

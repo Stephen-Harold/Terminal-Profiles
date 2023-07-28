@@ -1,5 +1,6 @@
 #!/usr/local/bin/bash
 DEBUG "common config" "Executing (Inside File)";
 # -= DOCK: HIDE/UNHIDE =-
+
 [[ $( defaults read com.apple.dock autohide-delay ) != 0.0005 ]] && \
       $( defaults write com.apple.dock autohide-delay -float 0.0005; killall Dock )
