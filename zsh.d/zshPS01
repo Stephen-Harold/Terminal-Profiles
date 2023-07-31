@@ -1,5 +1,4 @@
 #!/usr/local/bin/bash
-# -= Windows License Key: RPCP7-N6BC2-FVW96-TYFPP-CKCKG =-
 lastErrorValue=${1:-0}; # If Var $1 is not defined it's default will be 0.
 
 function DEBUG() {
