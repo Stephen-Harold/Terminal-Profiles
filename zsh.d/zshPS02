@@ -1,16 +1,9 @@
-#!/bin/bash
-returnValue=$1;
+#!/usr/local/bin/bash
 
-function textErrorFunction() {
-	echo "%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} ${returnValue} %{${LU}${RESET}%} ${_textShellPink}\:> ";
+function echoPS2() {
+	# shellcheck disable=SC2004,SC2250
+	echo "$(tput setaf 81)${UL}|incomplete|${LU}${WHITE}:\>${RESET} ";
 }
 
-function echoPrompt()	{
-	local _textPath;
-	_textPath=$([[ "${PWD}" = "/Users/stephen-harold" ]] && echo "%{${WHITE}%}('${home}%{${WHITE}%}')%{${RESET}%}" || echo "%{${WHITE}%}(%2~%{${CYAN}%}/%{${WHITE}%})%{${RESET}%}");
-	local _textShellPink="%{${PINK}%}${SHELL//*\/}%{${RESET}%}";
-	[[ "${returnValue}" != 0 ]] && echo textErrorFunction "${returnValue}" || echo "${_textPath} ${_textShellPink}\:> ";
-}
-
-echo echoPrompt;
-unset returnValue;
+# Echo to PS2 definition in .zshrc
+echoPS2;

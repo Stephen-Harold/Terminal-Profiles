@@ -1,13 +1,34 @@
 #!/usr/local/bin/bash
 DEBUG "zsh overrides" "Executing (Inside File)";
+
+
+# default prompts
+function failOverPrompts() {
+    local pName="$1";
+    DEBUG "zsh overrides" "Using failOver for ${pName} Prompt";
+    [[ ${pName} = "PS1" ]] && PS1="[%n@%M] (%2~):\> ";
+    [[ ${pName} = "PS2" ]] && PS2="(%2~):\> ";
+}
+
 # -= PROMPT: PRECMD HOOK OVERRIDE =-
 function precmd() {
     local _exitValue=$?;
-    local _prefix="/Users/stephen-harold/.local/profiles/zsh.d";
-    local _filePS1="${_prefix}/zshPS01";
-    local _filePS2="${_prefix}/zshPS02";
-    [[ -r "${_filePS1}" ]] && PS1=$( "${_filePS1}" "${_exitValue}" || PS1="[%n@%M] (%2~)\#\#: ")
-    [[ -r "${_filePS2}" ]] && PS2=$( "${_filePS2}" "${_exitValue}" || PS2="(%2~)$: ")
+    if [[ -d "${dZSH}" ]]
+    then
+        # shellcheck disable=SC2015
+        [[ -r "${dZSH}/zshPS01" ]] && PS1="$( "${dZSH}/zshPS01" ${_exitValue} )" || failOverPrompts "PS1"
+        # shellcheck disable=SC2015
+        [[ -r "${dZSH}/zshPS02" ]] && PS2="$( "${dZSH}/zshPS02" ${_exitValue} )" || failOverPrompts "PS2"
+    else
+        failOverPrompts "PS1";
+        failOverPrompts "PS2";
+    fi
+}
+
+function chpwd() {
+    # code to execute on change of current directory
+    DEBUG "zsh overrides" "override chpwd, change of current diectory event";
+
 }
 
 

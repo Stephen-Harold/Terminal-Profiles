@@ -28,12 +28,13 @@ function textDefaultZSHPS01() {
 # Catch return value before any other command executes
 	local _rval=$1;
 # unique terminal text colour configurations
-	local _rndNum=$(( RANDOM % 254 + 1 ));
+# shellcheck disable=SC2004,SC2250
+	local _rndNum=$(( $RANDOM % 254 + 1 ));
 	dbg "zshPS01" "Generated random number, value: ${_rndNum}"
 	local _hostDecor;
 	_hostDecor=$(tput setaf 57);
 	local _hostClr;
-	_hostClr=$(tput setaf ${_rndNum} );
+	_hostClr=$(tput setaf "${_rndNum}" );
 	local _pathDecor;
 	_pathDecor=$(tput setaf 7);
 	local _pathClr;
@@ -48,7 +49,6 @@ function textDefaultZSHPS01() {
 			 tput setaf $(( RANDOM % 254 + 1 )); printf "e"; \
 			 tput sgr0; );
 
-	export RANDOM_NUMBER=$((_rndNum++));
 	dbg "zshPS01" "Set text variables colors."
 # Current time in 24hr clock
 	local _textTime;
@@ -62,37 +62,31 @@ function textDefaultZSHPS01() {
 # Error text when return value isn't zero
 	local _textError;
 	# shellcheck disable=SC2154,SC2250,SC2288,SC2086
-	_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $(seq -f '%03g' $_rval) %{$LU$RESET%}";
-
+	#_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $(seq -f '%03g' $_rval) %{$LU$RESET%}";
+	_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rndNum %{$LU$RESET%}";
 # 'home' -OR- $PWD
 	local _textPath;
 	case ${PWD} in
 		"/Users/stephen-harold")
-		_textPath="%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}";
+			_textPath="%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}";
 		;;
 		"/var/root")
-		_textPath="%{${WHITE}%}('${RED}/VAR/ROOT%{${WHITE}%}')%{${RESET}%}";
+			_textPath="%{${WHITE}%}('${RED}/VAR/ROOT%{${WHITE}%}')%{${RESET}%}";
 		;;
 		*)
-		_textPath="%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}";
+			_textPath="%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}";
 		;;
 	esac
-
-	# _textPath=$([[ "${PWD}" = "/Users/stephen-harold" ]] && \
-	# 	echo "%{${WHITE}%}('${_home}%{${WHITE}%}')%{${RESET}%}" || \
-	# 	echo "%{${_pathDecor}${UL}%}(%{${LU}${_pathClr}%}%2~%{${CYAN}%}/%{${_pathDecor}${UL}%})%{${LU}${RESET}%}");
 
 # The current shell notification and insert point
 	local _textShell;
 	# shellcheck disable=SC2288
 	local shl="zsh";
 	_textShell="%{${UL}${_shellClr}%}${shl}%{${LU}${RESET}${WHITE}%}:%{${RESET}%}";
-
-	dbg "zshPS01" "Set all text variables values"
-
-	printf "%s %s %s " "$([[ "${lastErrorValue}" != 0 ]] && echo "${_textError}" || echo "${_textHost}" )" "${_textPath}" "${_textShell}";
-
+	dbg "zshPS01" "All text variables values should be set"
 	#dbg "zshPS01" "Called 'printf' using text variables."
+# shellcheck disable=SC2046
+	printf "%s %s %s " $([[ "${_rval}" != 0 ]] && echo "${_textError}" || echo "${_textHost}" ) "${_textPath}" "${_textShell}";
 }
 
 # Print to PS1 definition in .zshrc

@@ -29,8 +29,6 @@ declare -gx UL;
 UL=$(tput smul);
 declare -gx LU;
 LU=$(tput rmul);
-declare -gx RESET;
-RESET=$(tput sgr0);
 # terminal text colours, foreground & background
 declare -gx redOnWhite;
 redOnWhite=$(tput setab 15; tput setaf 1;);
@@ -38,6 +36,8 @@ declare -gx whiteOnRed;
 whiteOnRed=$(tput setab 1; tput setaf 15;);
 declare -gx BlueOnBlue;
 BlueOnBlue=$(tput setab 17; tput setaf 12;);
+declare -gx RESET;
+RESET=$(tput sgr0);
 
 
 # -= ENV: EXPORTS =-
@@ -46,12 +46,12 @@ export EDITOR=nano;
 export GREP_COLOR=36;
 export USERNAME=${LOGNAME};
 export HOSTNAME=${HOST};
-export du="/usr/local/lib/utils.d";
 export dCOMMON="/Users/stephen-harold/.local/profiles/common.d";
 export dZSH="/Users/stephen-harold/.local/profiles/zsh.d";
 export dBASH="/Users/stephen-harold/.local/profiles/bash.d";
-export dUTILS_DEBUG="Off";
 export dPROFILES_DEBUG="Off";
+export dUTILS="/usr/local/lib/utils.d";
+export dUTILS_DEBUG="Off";
 # DON'T MOVE OR EDIT THESE NEXT 2 LINES OF CODE!
 # _tn=$( ps -afx | grep -i -E  '\-zsh' | grep -v 'grep' | wc -l );
 # export TerminalTabsCount=$( echo $_tn | tr -d '[:space:]' );
