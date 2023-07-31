@@ -1,7 +1,6 @@
 #!/usr/local/bin/bash
 DEBUG "zsh overrides" "Executing (Inside File)";
 
-
 # default prompts
 function failOverPrompts() {
     local pName="$1";
