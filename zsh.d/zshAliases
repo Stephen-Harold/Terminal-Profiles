@@ -1,11 +1,10 @@
-#!/usr/local//bin/bash
+#!/usr/localbin/bash
 # shellcheck disable=SC2139,SC2250
 
 # If you very quietly start a conversation with me you can sit back and let me fill in the blanks..
 
-
 DEBUG "zshAlieses" "Executing";
-# -= ALIASES:  UNIQUE TO ZSH  =-
+# -= ALIASES: UNIQUE TO ZSH  =-
 alias editExports="nano $dZSH/zshExports"
 alias editAliases="nano $dZSH/zshAliases"
 alias editOptions="nano $dZSH/zshOptions"

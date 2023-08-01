@@ -24,10 +24,10 @@ function dbg() {
 
 function textDefaultZSHPS01() {
 # -= PROMPT: Preconfigured text snippets =-
-# Catch return value before any other command executes
+	# Catch return value before any other command executes
 	local _rval=$1;
-# unique terminal text colour configurations
-# shellcheck disable=SC2004,SC2250
+	# unique terminal text colour configurations
+	# shellcheck disable=SC2004,SC2250
 	local _rndNum=$(( $RANDOM % 254 + 1 ));
 	dbg "zshPS01" "Generated random number, value: ${_rndNum}"
 	local _hostDecor;
@@ -40,7 +40,7 @@ function textDefaultZSHPS01() {
 	_pathClr=$(tput setaf 15);
 	local _shellClr;
 	_shellClr=$(tput setaf $(( _rndNum + 2 )));
-# Home directory text with random colours for each character
+	# Home directory text with random colours for each character
 	local _home;
 	_home=$( tput setaf $(( RANDOM % 254 + 1 )); printf "h"; \
 			 tput setaf $(( RANDOM % 254 + 1 )); printf "o"; \
@@ -49,21 +49,21 @@ function textDefaultZSHPS01() {
 			 tput sgr0; );
 
 	dbg "zshPS01" "Set text variables colors."
-# Current time in 24hr clock
+	# Current time in 24hr clock
 	local _textTime;
 	# shellcheck disable=SC2154
 	_textTime="${BlueOnBlue}${UL}|$(date +%H:%M)|${LU}${RESET}";
 
-# MacBook name
+	# MacBook name
 	local _textHost;
 	_textHost="%{${_hostDecor}${UL}${_hostClr}%}${HOSTNAME//\.*}%{${_hostDecor}${LU}${RESET}%}";
 
-# Error text when return value isn't zero
+	# Error text when return value isn't zero
 	local _textError;
 	# shellcheck disable=SC2154,SC2250,SC2288,SC2086
 	#_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $(seq -f '%03g' $_rval) %{$LU$RESET%}";
 	_textError="%{${whiteOnRed}%}${UL}Error ${LU}%{${RESET}%}%{${redOnWhite}%}${UL} $_rndNum %{$LU$RESET%}";
-# 'home' -OR- $PWD
+	# \'home\' -OR- $PWD
 	local _textPath;
 	case ${PWD} in
 		"/Users/stephen-harold")
@@ -77,17 +77,17 @@ function textDefaultZSHPS01() {
 		;;
 	esac
 
-# The current shell notification and insert point
+	# The current shell notification and insert point
 	local _textShell;
 	# shellcheck disable=SC2288
 	local shl="zsh";
 	_textShell="%{${UL}${_shellClr}%}${shl}%{${LU}${RESET}${WHITE}%}:%{${RESET}%}";
 	dbg "zshPS01" "All text variables values should be set"
-	#dbg "zshPS01" "Called 'printf' using text variables."
-# shellcheck disable=SC2046
+	dbg "zshPS01" "Called 'printf' using text variables."
+	# shellcheck disable=SC2046
 	printf "%s %s %s " $([[ "${_rval}" != 0 ]] && echo "${_textError}" || echo "${_textHost}" ) "${_textPath}" "${_textShell}";
 }
 
 # Print to PS1 definition in .zshrc
 textDefaultZSHPS01 "${lastErrorValue}";
-#dbg "zshPS01" "Exiting script."
+
