@@ -1,6 +1,7 @@
 {
   "editor.default_syntax" : "shell",
-  "workspace.color" : 9,
+  "terminal" : "Apple Terminal",
+  "workspace.color" : 8,
   "workspace.name" : "Terminal Profiles",
   "workspace.preview_root" : ".",
   "workspace.preview_type" : "custom"
