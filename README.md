@@ -5,7 +5,7 @@
 > I wipe my about every four months or so depending on what crap I've accumulated from various projects, customer files etc.
 > 
 > 
-Malware is is attacking every Mac these days. Apple is doing a great job of stopping the malware from doing any real damage but it does get some information and does just hang around on your machine afterwards.
+> Malware is is attacking every Mac these days. Apple is doing a great job of stopping the malware from doing any real damage but it does get some information and does just hang around on your machine afterwards.
 Thats why I do reinstall.
 
 > All my important files are on github or iCloud and sync post reinstall. Thats why I built this profile management system.
